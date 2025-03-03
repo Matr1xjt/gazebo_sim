@@ -1,0 +1,16 @@
+<launch>
+  <remap from="/camera/depth/image_raw" to="/camera/depth_registered/image_raw"/>
+    <!-- 将 Urdf 文件的内容加载到参数服务器 -->
+    <param name="robot_description" command="$(find xacro)/xacro $(find gazebo)/urdf/car.xacro" />
+    <!-- 启动 gazebo -->
+  <!-- Start Gazebo with a blank world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find gazebo)/world/ROS-Academy.world"/>
+    <!--arg name="world_name" value="$(find turtlebot_gazebo)/worlds/playground.world"/-->
+  </include>
+    <!-- 在 gazebo 中显示机器人模型 -->
+    <node pkg="gazebo_ros" type="spawn_model" name="model" args="-urdf -model mycar -param robot_description"  />
+
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+</launch>
